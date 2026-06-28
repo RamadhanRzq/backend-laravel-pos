@@ -28,7 +28,7 @@ class AuthController extends Controller
         $token = $user->createToken('auth-token')->plainTextToken;
 
         return response()->json([
-            'message' => 'User registered successfully',
+            'message' => 'Registrasi user berhasil !',
             'data' => [
                 'user' => $user,
                 'token' => $token,
@@ -49,14 +49,14 @@ class AuthController extends Controller
 
         if (!$user || !Hash::check($validated['password'], $user->password)) {
             throw ValidationException::withMessages([
-                'login' => ['The provided credentials are incorrect.'],
+                'login' => ['Informasi login tidak sesuai'],
             ]);
         }
 
         $token = $user->createToken('auth-token')->plainTextToken;
 
         return response()->json([
-            'message' => 'Login successful',
+            'message' => 'Berhasil login !',
             'token' => $token,
             'data' => [
                 'user' => $user,
@@ -69,7 +69,7 @@ class AuthController extends Controller
         $request->user()->currentAccessToken()->delete();
 
         return response()->json([
-            'message' => 'Logged out successfully',
+            'message' => 'Berhasil Logout !',
         ]);
     }
 
