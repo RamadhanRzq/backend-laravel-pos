@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Superadmin',
             'username' => 'superadmin',
             'password' => 'superadmin',
+            'no_hp' => '08123456789',
         ]);
     }
 }
