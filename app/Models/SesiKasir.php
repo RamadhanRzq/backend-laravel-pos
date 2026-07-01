@@ -7,15 +7,16 @@ use Illuminate\Database\Eloquent\Attributes\Casts;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-#[Fillable(['user_id', 'opening_cash', 'closing_cash', 'opened_at', 'closed_at', 'status'])]
+#[Fillable(['user_id', 'saldo_awal', 'saldo_akhir', 'waktu_saldo_awal', 'waktu_saldo_akhir', 'status'])]
 #[Casts([
-    'opening_cash' => 'decimal:2',
-    'closing_cash' => 'decimal:2',
-    'opened_at' => 'datetime',
-    'closed_at' => 'datetime',
+    'saldo_awal' => 'decimal:2',
+    'saldo_akhir' => 'decimal:2',
+    'waktu_saldo_awal' => 'datetime',
+    'waktu_saldo_akhir' => 'datetime',
 ])]
-class CashierSession extends Model
+class SesiKasir extends Model
 {
+    protected $table = 'sesi_kasir';
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

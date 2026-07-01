@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\CashierSessionController;
+use App\Http\Controllers\Api\SesiKasirController;
 use App\Http\Controllers\Api\MapUsersToRoleController;
 use App\Http\Controllers\Api\RoleController;
 use Illuminate\Support\Facades\Route;
@@ -21,8 +21,8 @@ Route::prefix('auth')->group(function () {
 });
 
 Route::middleware('auth:sanctum')->prefix('pos')->group(function () {
-    Route::get('/sessions/current', [CashierSessionController::class, 'current']);
-    Route::post('/sessions/open', [CashierSessionController::class, 'open']);
-    Route::post('/sessions/close', [CashierSessionController::class, 'close']);
-    Route::get('/sessions/history', [CashierSessionController::class, 'history']);
+    Route::get('/sessions/current', [SesiKasirController::class, 'current']);
+    Route::post('/sessions/open', [SesiKasirController::class, 'open']);
+    Route::post('/sessions/close', [SesiKasirController::class, 'close']);
+    Route::get('/sessions/history', [SesiKasirController::class, 'history']);
 });

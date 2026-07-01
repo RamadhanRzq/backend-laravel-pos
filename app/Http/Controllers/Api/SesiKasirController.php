@@ -3,16 +3,16 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\CashierSession;
+use App\Models\SesiKasir;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
-class CashierSessionController extends Controller
+class SesiKasirController extends Controller
 {
     public function current(Request $request): JsonResponse
     {
-        $session = CashierSession::open()->forUser($request->user()->id)->latest('opened_at')->first();
+        $session = SesiKasir::open()->forUser($request->user()->id)->latest('waktu_saldo_awal')->first();
 
         return response()->json(['data' => $session]);
     }
@@ -20,21 +20,21 @@ class CashierSessionController extends Controller
     public function open(Request $request): JsonResponse
     {
         $validated = $request->validate([
-            'opening_cash' => 'required|numeric|min:0',
+            'saldo_awal' => 'required|numeric|min:0',
         ]);
 
-        $existing = CashierSession::open()->forUser($request->user()->id)->exists();
+        $existing = SesiKasir::open()->forUser($request->user()->id)->exists();
 
         if ($existing) {
             throw ValidationException::withMessages([
-                'session' => ['Anda sudah memiliki sesi yang aktif'],
+                'sesi' => ['Anda sudah memiliki sesi yang aktif'],
             ]);
         }
 
-        $session = CashierSession::create([
+        $session = SesiKasir::create([
             'user_id' => $request->user()->id,
-            'opening_cash' => $validated['opening_cash'],
-            'opened_at' => now(),
+            'saldo_awal' => $validated['saldo_awal'],
+            'waktu_saldo_awal' => now(),
             'status' => 'open',
         ]);
 
@@ -44,10 +44,10 @@ class CashierSessionController extends Controller
     public function close(Request $request): JsonResponse
     {
         $validated = $request->validate([
-            'closing_cash' => 'required|numeric|min:0',
+            'saldo_akhir' => 'required|numeric|min:0',
         ]);
 
-        $session = CashierSession::open()->forUser($request->user()->id)->latest('opened_at')->first();
+        $session = SesiKasir::open()->forUser($request->user()->id)->latest('waktu_saldo_awal')->first();
 
         if (!$session) {
             throw ValidationException::withMessages([
@@ -56,8 +56,8 @@ class CashierSessionController extends Controller
         }
 
         $session->update([
-            'closing_cash' => $validated['closing_cash'],
-            'closed_at' => now(),
+            'saldo_akhir' => $validated['saldo_akhir'],
+            'waktu_saldo_akhir' => now(),
             'status' => 'closed',
         ]);
 
@@ -66,8 +66,8 @@ class CashierSessionController extends Controller
 
     public function history(Request $request): JsonResponse
     {
-        $sessions = CashierSession::forUser($request->user()->id)
-            ->orderBy('opened_at', 'desc')
+        $sessions = SesiKasir::forUser($request->user()->id)
+            ->orderBy('waktu_saldo_awal', 'desc')
             ->get();
 
         return response()->json(['data' => $sessions]);

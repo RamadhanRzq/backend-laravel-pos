@@ -8,13 +8,13 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('cashier_sessions', function (Blueprint $table) {
+        Schema::create('sesi_kasir', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->decimal('opening_cash', 15, 2);
-            $table->decimal('closing_cash', 15, 2)->nullable();
-            $table->timestamp('opened_at');
-            $table->timestamp('closed_at')->nullable();
+            $table->decimal('saldo_awal', 15, 2);
+            $table->decimal('saldo_akhir', 15, 2)->nullable();
+            $table->timestamp('waktu_saldo_awal');
+            $table->timestamp('waktu_saldo_akhir')->nullable();
             $table->string('status')->default('open');
             $table->timestamps();
         });
@@ -22,6 +22,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('cashier_sessions');
+        Schema::dropIfExists('sesi_kasir');
     }
 };
